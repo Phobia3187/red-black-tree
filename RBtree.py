@@ -25,7 +25,17 @@ class RedBlackTree:
 # Required Methods For RBT
 
     # Insert into tree
-    # In order tree traversal  
+
+# In-Order Tree Traversal
+def in_order_traversal(self, node=None):
+        if node is None:
+            node = self.root
+        
+        if node != self.EMPTY:
+            self.in_order_traversal(node.left)
+            print(node.value)
+            self.in_order_traversal(node.right)
+
     # Search tree for value
     # rotate left
     # rotate right
