@@ -1,6 +1,5 @@
 from enum import Enum
 
-
 # Color Enumeration
 class Color(Enum):
     RED = 0
@@ -24,7 +23,33 @@ class RedBlackTree:
 
 # Required Methods For RBT
 
-    # Insert into tree
+# Insert Into Tree (BST)
+def insert(self, value):
+        new_node = Node(value)
+        new_node.left = self.EMPTY
+        new_node.right = self.EMPTY
+        
+        parent = None
+        current = self.root
+        
+        while current != self.EMPTY:
+            parent = current
+            if new_node.value < current.value:
+                current = current.left
+            else:
+                current = current.right
+        
+        new_node.parent = parent
+        
+        if parent is None:
+            self.root = new_node
+        elif new_node.value < parent.value:
+            parent.left = new_node
+        else:
+            parent.right = new_node
+        
+        new_node.color = Color.RED
+        # We will need to call fix insert here, most likely.
 
 # In-Order Tree Traversal
 def in_order_traversal(self, node=None):
