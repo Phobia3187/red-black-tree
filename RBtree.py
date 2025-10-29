@@ -84,10 +84,32 @@ class RedBlackTree:
         new_parent.left = node
         node.parent = new_parent
 
+    # Rotate Right
+    def _right_rotate(self, node):
+        new_parent = node.left
+
+        node.left = new_parent.right
+
+        if new_parent.right != self.EMPTY:
+            new_parent.right.parent = node
+
+        new_parent.parent = node.parent
+
+        if node.parent is None:
+            self.root = new_parent
+        elif node == node.parent.right:
+            node.parent.right = new_parent
+        else:
+            node.parent.left = new_parent
+
+        new_parent.right = node
+        node.parent = new_parent
+        # I would never copy and paste this from the other rotate function. :)
+
     # Search Tree
     def search(self, value):
         current = self.root
-        
+
         while current != self.EMPTY:
             if value == current.value:
                 return current
@@ -95,8 +117,7 @@ class RedBlackTree:
                 current = current.left
             else:
                 current = current.right
-                
+
         return None
 
-# rotate right
-# fix after insertion
+# Fix After Insertion
