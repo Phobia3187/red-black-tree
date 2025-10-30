@@ -47,7 +47,7 @@ class RedBlackTree:
             parent.right = new_node
 
         new_node.color = Color.RED
-        # We will need to call fix insert here, most likely.
+        self.fix_insert(new_node)
 
     # In-Order Tree Traversal
     def in_order_traversal(self, node=None):
@@ -119,5 +119,42 @@ class RedBlackTree:
                 current = current.right
 
         return None
-
-# Fix After Insertion
+    
+    # Fix After Insertion
+    def fix_insert(self, node):
+        while node.parent and node.parent.color == Color.RED:
+            if node.parent == node.parent.parent.left:
+                uncle = node.parent.parent.right
+                
+                if uncle.color == Color.RED:
+                    node.parent.color = Color.BLACK
+                    uncle.color = Color.BLACK
+                    node.parent.parent.color = Color.RED
+                    node = node.parent.parent
+                else:
+                    if node == node.parent.right:
+                        node = node.parent
+                        self._right_rotate(node)
+                    
+                    node.parent.color = Color.BLACK
+                    node.parent.parent.color = Color.RED
+                    self._right_rotate(node.parent.parent)
+            else:
+                uncle = node.parent.parent.left
+                
+                if uncle.color == Color.RED:
+                    node.parent.color = Color.BLACK
+                    uncle.color = Color.BLACK
+                    node.parent.parent.color = Color.RED
+                    node = node.parent.parent
+                else:
+                    if node == node.parent.left:
+                        node = node.parent
+                        self._right_rotate(node)
+                    
+                    node.parent.color = Color.BLACK
+                    node.parent.parent.color = Color.RED
+                    self._left_rotate(node.parent.parent)
+        
+        self.root.color = Color.BLACK
+        # I think I did this right? This is complex and could probably be better.
