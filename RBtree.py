@@ -119,39 +119,54 @@ class RedBlackTree:
                 current = current.right
 
         return None
+
+    # Delete a node   /// IN PROGRESS. ILL WRAP THIS UP BY SATURDAY MORE COMPLICATED THAN I THOUGHT///
+    def delete(self, value):
+        node = self.search(value)
+
+        # Remember original node color for fixing the delete
+        originalNode = node
+        originalColor = originalNode.color
+
     
     # Fix After Insertion
     def fix_insert(self, node):
         while node.parent and node.parent.color == Color.RED:
             if node.parent == node.parent.parent.left:
                 uncle = node.parent.parent.right
-                
+
+                # Code is red - recolor required
                 if uncle.color == Color.RED:
                     node.parent.color = Color.BLACK
                     uncle.color = Color.BLACK
                     node.parent.parent.color = Color.RED
                     node = node.parent.parent
                 else:
+                    # Node is right child - rotate left
                     if node == node.parent.right:
                         node = node.parent
-                        self._right_rotate(node)
-                    
+                        self._left_rotate(node)
+
+                    # Node is left child - rotate right and change color
                     node.parent.color = Color.BLACK
                     node.parent.parent.color = Color.RED
                     self._right_rotate(node.parent.parent)
             else:
                 uncle = node.parent.parent.left
-                
+
+                # Uncle is red so recolor
                 if uncle.color == Color.RED:
                     node.parent.color = Color.BLACK
                     uncle.color = Color.BLACK
                     node.parent.parent.color = Color.RED
                     node = node.parent.parent
                 else:
+                    # Node is left child so rotate right
                     if node == node.parent.left:
                         node = node.parent
                         self._right_rotate(node)
-                    
+
+                    # Node is right child so rotate left and recolor
                     node.parent.color = Color.BLACK
                     node.parent.parent.color = Color.RED
                     self._left_rotate(node.parent.parent)
