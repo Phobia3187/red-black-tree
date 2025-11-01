@@ -57,6 +57,7 @@ class RedBlackTree:
         if node != self.EMPTY:
             self.in_order_traversal(node.left)
             print(node.value)
+            print(node.color)
             self.in_order_traversal(node.right)
 
     # Rotate left
@@ -173,3 +174,16 @@ class RedBlackTree:
         
         self.root.color = Color.BLACK
         # I think I did this right? This is complex and could probably be better.
+        
+def main():
+    tree = RedBlackTree()
+    
+    values = [10, 30, 20]
+    
+    for value in values:
+        tree.insert(value)
+        
+    tree.in_order_traversal()
+    
+if __name__ == "__main__":
+    main()
