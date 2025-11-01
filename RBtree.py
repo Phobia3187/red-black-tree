@@ -177,13 +177,37 @@ class RedBlackTree:
         
 def main():
     tree = RedBlackTree()
+    values = []
+    choice = 0
     
-    values = [10, 30, 20]
+    while choice != -1:
+        try:
+            choice = int(input("Enter a value (-1 to quit): "))
+        except:
+            print("Error! Try again with a value.")
+        
+        if choice != -1:
+            values.append(choice)
     
     for value in values:
         tree.insert(value)
         
     tree.in_order_traversal()
+    
+    choice = 0
+        
+    while choice != -1:
+        try:
+            choice = int(input("Enter a value to search for (-1 to quit): "))
+        except:
+            print("Error! Try again with a value.")
+            
+        result = tree.search(choice)
+        
+        if result:
+            print(f"{result.value} was found!")
+        else:
+            print(f"{choice} not found!")
     
 if __name__ == "__main__":
     main()
