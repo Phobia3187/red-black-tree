@@ -143,11 +143,12 @@ class RedBlackTree:
     def _findMinimum(self, node):
         while node.left != self.EMPTY:
             node = node.left
-    return node
+            
+        return node
 
     # Fix delete (fixes the node that replaced deleted node
     def _fixDelete(self, node):
-        while node != self.root and node.color = Color.BLACK:
+        while node != self.root and node.color == Color.BLACK:
             # Node is a left child
             if ndoe == node.parent.left:
                 sibling = node.parent.right
