@@ -121,7 +121,7 @@ class RedBlackTree:
 
         return None
 
-    # Delete a node   /// IN PROGRESS. ILL WRAP THIS UP BY SATURDAY MORE COMPLICATED THAN I THOUGHT///
+    # Delete a node   /// IN PROGRESS. Building helper functions
     def delete(self, value):
         node = self.search(value)
 
@@ -129,6 +129,82 @@ class RedBlackTree:
         originalNode = node
         originalColor = originalNode.color
 
+    # Replace subtree helper for delete
+    def _replaceSubtree(self, oldNode, newNode):
+        if oldNode.parent is None:
+            self.root = newNode
+        elif oldNode == oldNode.parent.left:
+            oldNode.parent.left = newNode  # Fixed the typo here
+        else:
+            oldNode.parent.right = newNode
+        newNode.parent = oldNode.parent
+   
+    # Find left most or lowest node of tree or subtree
+    def _findMinimum(self, node):
+        while node.left != self.EMPTY:
+            node = node.left
+    return node
+
+    # Fix delete (fixes the node that replaced deleted node
+    def _fixDelete(self, node):
+        while node != self.root and node.color = Color.BLACK:
+            # Node is a left child
+            if ndoe == node.parent.left:
+                sibling = node.parent.right
+                if sibling.color == Color.RED:
+                    sibling.color = Color.BLACK
+                    node.parent.color = Color.RED
+                    self._left_rotate(node.parent)
+                    sibling = node.parent.right
+
+                # Sibling is black with two black children
+                if sibling.left.color == Color.BLACK and sibling.right.color == Color.BLACK:
+                    sibling.color = Color.RED
+                    node = node.parent
+                else:
+                    # Sibling right child is black, left is red
+                    if sibling.right.color == Color.BLACK:
+                        sibling.left.color = Color.BLACK
+                        sibling.color = Color.RED
+                        self._right_rotate(sibling)
+                        sibling = node.parent.right  
+                    # Sibling right child is red
+                    sibling.color = node.parent.color
+                    node.parent.color = Color.BLACK
+                    sibling.right.color = Color.BLACK
+                    self._left_rotate(node.parent)
+                    node = self.root 
+            else:
+                # Node is a right child
+                sibling = node.parent.left  # Get the sibling
+            
+                # Sibling is red
+                if sibling.color == Color.RED:
+                    sibling.color = Color.BLACK
+                    node.parent.color = Color.RED
+                    self._right_rotate(node.parent)
+                    sibling = node.parent.left
+                
+                # Sibling is black with two black children
+                if sibling.right.color == Color.BLACK and sibling.left.color == Color.BLACK:
+                    sibling.color = Color.RED
+                    node = node.parent
+                else:
+                    # Sibling left child is black, right is red
+                    if sibling.left.color == Color.BLACK:
+                        sibling.right.color = Color.BLACK
+                        sibling.color = Color.RED
+                        self._left_rotate(sibling)
+                        sibling = node.parent.left
+                    
+                    # Sibling left child is red
+                    sibling.color = node.parent.color
+                    node.parent.color = Color.BLACK
+                    sibling.left.color = Color.BLACK
+                    self._right_rotate(node.parent)
+                    node = self.root
+
+    
     
     # Fix After Insertion
     def fix_insert(self, node):
