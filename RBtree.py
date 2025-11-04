@@ -30,6 +30,7 @@ class RedBlackTree:
         parent = None
         current = self.root
 
+        # Traverse the tree to find the correct insertion point like a BST.
         while current != self.EMPTY:
             parent = current
             if new_node.value < current.value:
@@ -37,10 +38,13 @@ class RedBlackTree:
             else:
                 current = current.right
 
+        # Set the parent of the new node.
         new_node.parent = parent
 
+        # If the tree was empty, the new node becomes the root.
         if parent is None:
             self.root = new_node
+        # Otherwise, place the new node as the left or right child of the parent.
         elif new_node.value < parent.value:
             parent.left = new_node
         else:
@@ -62,7 +66,7 @@ class RedBlackTree:
 
     # Rotate left
     def _left_rotate(self, node):
-        # Declare new paretn node
+        # Declare new parent node.
         new_parent = node.right
 
         # Move new parent's left subtree to location of node's right subtree
@@ -87,13 +91,16 @@ class RedBlackTree:
 
     # Rotate Right
     def _right_rotate(self, node):
+        # The node's left child becomes the new parent of this subtree.
         new_parent = node.left
 
+        # The new parent's right child is moved to become the old parent's left child.
         node.left = new_parent.right
 
         if new_parent.right != self.EMPTY:
             new_parent.right.parent = node
 
+        # Link the new parent to the original node's parent.
         new_parent.parent = node.parent
 
         if node.parent is None:
@@ -103,14 +110,16 @@ class RedBlackTree:
         else:
             node.parent.left = new_parent
 
+        # The old parent becomes the right child of the new parent.
         new_parent.right = node
         node.parent = new_parent
-        # I would never copy and paste this from the other rotate function. :)
+        # I would never copy and paste this from the other rotate function. :) - True
 
     # Search Tree
     def search(self, value):
         current = self.root
 
+        # Pretty much BST search logic.
         while current != self.EMPTY:
             if value == current.value:
                 return current
