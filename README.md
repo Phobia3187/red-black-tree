@@ -8,29 +8,39 @@ RULES:
   All empty/left/NIL nodes are black
 ```mermaid
 classDiagram
+    class Color {
+            <<enumeration>>
+            RED
+            BLACK
+        }
     class Node {
         -int value
-        -str color
+        -Color color
         -Node left
         -Node right
         -Node parent
-        +__init__(value, color)
+        +__init__(value)
     }
     
-    class RedBlackTree {
+  class RedBlackTree {
         -Node root
-        -Node NIL
+        -Node EMPTY
         +__init__()
         +insert(value)
-        -_fix_insert(node)
-        -_rotate_left(node)
-        -_rotate_right(node)
+        +delete(value)
         +search(value)
-        +inorder_traversal(node)
+        +in_order_traversal(node)
+        -fix_insert(node)
+        -_fixDelete(node)
+        -_left_rotate(node)
+        -_right_rotate(node)
+        -_replaceSubtree(oldNode, newNode)
+        -_findMinimum(node)
     }
     
+   Node --> Color : uses
     RedBlackTree "1" --> "1" Node : root
-    RedBlackTree "1" --> "1" Node : NIL
+    RedBlackTree "1" --> "1" Node : EMPTY
     Node "1" --> "0..1" Node : left
     Node "1" --> "0..1" Node : right
     Node "1" --> "0..1" Node : parent
