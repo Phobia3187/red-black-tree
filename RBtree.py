@@ -10,9 +10,9 @@ class Node:
     def __init__(self, value):
         self.value = value
         self.color = Color.RED
-        self.left: "Node" = None
-        self.right: "Node" = None
-        self.parent: "Node" = None
+        self.left: = None
+        self.right: = None
+        self.parent: = None
 
 # Implement RB Tree
 class RedBlackTree:
@@ -130,7 +130,7 @@ class RedBlackTree:
 
         return None
 
-    # Delete a node   /// IN PROGRESS. Building helper functions
+    # Delete a node 
     def delete(self, value):
         node = self.search(value)
 
@@ -138,12 +138,44 @@ class RedBlackTree:
         originalNode = node
         originalColor = originalNode.color
 
+        # Node has no left child or no children, Replace node with right child
+        if node.left == self.EMPTY:
+            newNode = node.right
+            self._replaceSubtree(node, node.right)
+        # Node has no right child, Replace with its left child
+        elif node.right == self.EMPTY:
+            newNode = node.left
+            self._replaceSubtree(node, node.left)
+        # Node has two children
+        else:
+            # Find the smallest node in the right subtree to replace node we delete
+            originalNode = self._findMinimum(node.right)
+            originalColor = originalNode.color
+            newNode = originalNode.right
+            
+            # If smallest node is direct right child of original node
+            if originalNode.parent == node:
+                newNode.parent = originalNode
+            else:
+                self._replaceSubtree(originalNode, originalNode.right)
+                originalNode.right = node.right
+                originalNode.right.parent = originalNode
+
+            # Replace deleted node with it successor
+            self._replaceSubtree(node, originalNode)
+            originalNode.left = node.left
+            originalNode.left.parent = originalNode
+            originalNode.color = node.color
+            
+        if originalColor == Color.BLACK:
+            self._fixDelete(newNode)
+
     # Replace subtree helper for delete
     def _replaceSubtree(self, oldNode, newNode):
         if oldNode.parent is None:
             self.root = newNode
         elif oldNode == oldNode.parent.left:
-            oldNode.parent.left = newNode  # Fixed the typo here
+            oldNode.parent.left = newNode  
         else:
             oldNode.parent.right = newNode
         newNode.parent = oldNode.parent
@@ -159,7 +191,7 @@ class RedBlackTree:
     def _fixDelete(self, node):
         while node != self.root and node.color == Color.BLACK:
             # Node is a left child
-            if ndoe == node.parent.left:
+            if node == node.parent.left:
                 sibling = node.parent.right
                 if sibling.color == Color.RED:
                     sibling.color = Color.BLACK
@@ -213,6 +245,8 @@ class RedBlackTree:
                     sibling.left.color = Color.BLACK
                     self._right_rotate(node.parent)
                     node = self.root
+
+        node.color = Color.BLACK
 
     
     
