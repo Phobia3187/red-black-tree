@@ -10,9 +10,9 @@ class Node:
     def __init__(self, value):
         self.value = value
         self.color = Color.RED
-        self.left: = None
-        self.right: = None
-        self.parent: = None
+        self.left = None
+        self.right = None
+        self.parent = None
 
 # Implement RB Tree
 class RedBlackTree:
