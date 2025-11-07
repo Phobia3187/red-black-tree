@@ -133,6 +133,8 @@ class RedBlackTree:
     # Delete a node 
     def delete(self, value):
         node = self.search(value)
+        if node is None:
+            return
 
         # Remember original node color for fixing the delete
         originalNode = node
@@ -178,7 +180,8 @@ class RedBlackTree:
             oldNode.parent.left = newNode  
         else:
             oldNode.parent.right = newNode
-        newNode.parent = oldNode.parent
+        if newNode != self.EMPTY:
+            newNode.parent = oldNode.parent
    
     # Find left most or lowest node of tree or subtree
     def _findMinimum(self, node):
@@ -300,34 +303,59 @@ def main():
     values = []
     choice = 0
     
-    while choice != -1:
+    print("   RED BLACK Tree Menu   ")
+    print("1. Insert a value")
+    print("2. Display Tree (in order traversal)")
+    print("3. Search for a value")
+    print("4. Delete a value")
+    print("5. Exit the program")
+
+    while True:
         try:
-            choice = int(input("Enter a value (-1 to quit): "))
-        except:
-            print("Error! Try again with a value.")
-        
-        if choice != -1:
-            values.append(choice)
-    
-    for value in values:
-        tree.insert(value)
-        
-    tree.in_order_traversal()
-    
-    choice = 0
-        
-    while choice != -1:
-        try:
-            choice = int(input("Enter a value to search for (-1 to quit): "))
-        except:
-            print("Error! Try again with a value.")
-            
-        result = tree.search(choice)
-        
-        if result:
-            print(f"{result.value} was found!")
+            choice = int(input("\nEnter a choice (1-5): "))
+        except: 
+            print("Please enter a valid number.")
+            continue
+        if choice == 1:
+            print("\nType the values you want to insert (-1 to quit):")
+            while True:
+                try:
+                    value = int(input("Enter a value: "))
+                    if value == -1:
+                        break
+                    tree.insert(value)
+                    print(f"{value} was inserted")
+                except:
+                    print("Please enter a valid integer.")
+        elif choice == 2:
+            print("\nIn order traversal of RB Tree: ")
+            tree.in_order_traversal()
+        elif choice == 3:
+            try:
+                value = int(input("\nType a value to search for: "))
+                result = tree.search(value)
+                if result:
+                    print(f"{value} has been found. Color: {result.color}")
+                else:
+                    print(f"{value} was not found in tree")
+            except:
+                print("Please enter a valid integer.")
+        elif choice == 4:
+            try:
+                value = int(input("\nType a value to delete: "))
+                result = tree.search(value)
+                if result:
+                    tree.delete(value)
+                    print(f"{value} has been deleted")
+                else:
+                    print(f"{value} was not found in tree")
+            except:
+                print("Please enter a valid integer.")
+        elif choice == 5:
+            print("Exiting Red Black Tree")
+            break
         else:
-            print(f"{choice} not found!")
-    
+            print("Please enter a numbmer between 1 and 5.")
+
 if __name__ == "__main__":
     main()
