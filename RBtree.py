@@ -335,7 +335,7 @@ def main():
             print("Please enter a valid number.")
             continue
         if choice == 1:
-            print("\nType the values you want to insert (-1 to quit):")
+            print("\nType the values you want to insert. Press enter after each value (-1 when complete):")
             while True:
                 try:
                     value = int(input("Enter a value: "))
