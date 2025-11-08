@@ -383,7 +383,7 @@ def main():
             print("Exiting Red Black Tree")
             break
         else:
-            print("Please enter a numbmer between 1 and 5.")
+            print("Please enter a number between 1 and 5.")
 
 if __name__ == "__main__":
     main()
