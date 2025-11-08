@@ -66,10 +66,10 @@ class RedBlackTree:
 
     # Rotate left
     def _left_rotate(self, node):
-        # Declare new parent node.
+        # The nodes right child becomes the new parent of this subtree
         new_parent = node.right
 
-        # Move new parent's left subtree to location of node's right subtree
+        # The new parents left child is moved to become the old parents right child
         node.right = new_parent.left
 
         # Update parent after subtree moves
@@ -142,18 +142,18 @@ class RedBlackTree:
         node_removed = node_to_delete
         removed_color = node_removed.color
 
-        # Node has no left child or no children, Replace with right child
+        # Node has no left child so replace right child
         if node_to_delete.left == self.EMPTY:
             replacement_node = node_to_delete.right
             self.replaceSubtree(node_to_delete, node_to_delete.right)
-        # Node has no right child, Replace with its left child
+        # Node has no right child so replace with its left child
         elif node_to_delete.right == self.EMPTY:
             replacement_node = node_to_delete.left
             self.replaceSubtree(node_to_delete, node_to_delete.left)
         
         # Node has two children
         else:
-            # Find the smallest node in the right subtree to replace node_to_delete 
+            # Find smallest node in right subtree to replace deleted node
             node_removed = self.findMinimum(node_to_delete.right)
             removed_color = node_removed.color
             replacement_node = node_removed.right
