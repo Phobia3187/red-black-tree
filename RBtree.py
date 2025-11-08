@@ -1,3 +1,13 @@
+"""
+Group Project CS315: Red Black Tree
+Group Members: Kalum Fischer and John Markham
+Due Date: 12 November 2025
+Purpose: Satisfy the requirements of the group project for CS315 Data Structures
+Sources of Help:
+"""
+
+
+
 from enum import Enum
 
 # Color Enumeration
