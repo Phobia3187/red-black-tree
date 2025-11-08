@@ -132,125 +132,143 @@ class RedBlackTree:
 
     # Delete a node 
     def delete(self, value):
-        node = self.search(value)
-        if node is None:
+        # Find the node to delete
+        node_to_delete = self.search(value)
+        # Check if node is None or sentinel
+        if node_to_delete is None or node_to_delete == self.EMPTY:
             return
+            
+        # Remember removed node color for fixing the delete
+        node_removed = node_to_delete
+        removed_color = node_removed.color
 
-        # Remember original node color for fixing the delete
-        originalNode = node
-        originalColor = originalNode.color
-
-        # Node has no left child or no children, Replace node with right child
-        if node.left == self.EMPTY:
-            newNode = node.right
-            self._replaceSubtree(node, node.right)
+        # Node has no left child or no children, Replace with right child
+        if node_to_delete.left == self.EMPTY:
+            replacement_node = node_to_delete.right
+            self.replaceSubtree(node_to_delete, node_to_delete.right)
         # Node has no right child, Replace with its left child
-        elif node.right == self.EMPTY:
-            newNode = node.left
-            self._replaceSubtree(node, node.left)
+        elif node_to_delete.right == self.EMPTY:
+            replacement_node = node_to_delete.left
+            self.replaceSubtree(node_to_delete, node_to_delete.left)
+        
         # Node has two children
         else:
-            # Find the smallest node in the right subtree to replace node we delete
-            originalNode = self._findMinimum(node.right)
-            originalColor = originalNode.color
-            newNode = originalNode.right
+            # Find the smallest node in the right subtree to replace node_to_delete 
+            node_removed = self.findMinimum(node_to_delete.right)
+            removed_color = node_removed.color
+            replacement_node = node_removed.right
             
-            # If smallest node is direct right child of original node
-            if originalNode.parent == node:
-                newNode.parent = originalNode
+            # If smallest node is direct right child of node_to_delete
+            if node_removed.parent == node_to_delete:
+                replacement_node.parent = node_removed
+            # Smallest node is not direct child, but is grandchild or further
             else:
-                self._replaceSubtree(originalNode, originalNode.right)
-                originalNode.right = node.right
-                originalNode.right.parent = originalNode
+                self.replaceSubtree(node_removed, node_removed.right)
+                node_removed.right = node_to_delete.right
+                node_removed.right.parent = node_removed
 
             # Replace deleted node with it successor
-            self._replaceSubtree(node, originalNode)
-            originalNode.left = node.left
-            originalNode.left.parent = originalNode
-            originalNode.color = node.color
-            
-        if originalColor == Color.BLACK:
-            self._fixDelete(newNode)
+            self.replaceSubtree(node_to_delete, node_removed)
+            node_removed.left = node_to_delete.left
+            node_removed.left.parent = node_removed
+            node_removed.color = node_to_delete.color
+
+        # Removed node was balck so fix violations    
+        if  removed_color == Color.BLACK:
+            self.fix_delete(replacement_node)
 
     # Replace subtree helper for delete
-    def _replaceSubtree(self, oldNode, newNode):
-        if oldNode.parent is None:
-            self.root = newNode
-        elif oldNode == oldNode.parent.left:
-            oldNode.parent.left = newNode  
+    def replaceSubtree(self, old_node,  replacement_node):
+        if old_node.parent is None:
+            self.root = replacement_node
+        elif old_node == old_node.parent.left:
+            old_node.parent.left =   replacement_node  
         else:
-            oldNode.parent.right = newNode
-        if newNode != self.EMPTY:
-            newNode.parent = oldNode.parent
+            old_node.parent.right =  replacement_node
+        if  replacement_node != self.EMPTY:
+            replacement_node.parent = old_node.parent
    
     # Find left most or lowest node of tree or subtree
-    def _findMinimum(self, node):
-        while node.left != self.EMPTY:
-            node = node.left
-            
-        return node
+    def findMinimum(self, node):
+        current = node
+        while current.left != self.EMPTY:
+            current = current.left            
+        return current
 
-    # Fix delete (fixes the node that replaced deleted node
-    def _fixDelete(self, node):
+    # Fix delete, fix the red black properteis after deleteing Black node
+    def fix_delete(self, node):
+    # Loop until reaching root or node becomes red
         while node != self.root and node.color == Color.BLACK:
-            # Node is a left child
+            
+            # Left side fixing aka node is a left child
             if node == node.parent.left:
                 sibling = node.parent.right
+
+                # Sibling is red so rotate and recolor so sibling is black
                 if sibling.color == Color.RED:
                     sibling.color = Color.BLACK
                     node.parent.color = Color.RED
-                    self._left_rotate(node.parent)
-                    sibling = node.parent.right
-
-                # Sibling is black with two black children
-                if sibling.left.color == Color.BLACK and sibling.right.color == Color.BLACK:
+                    self.left_rotate(node.parent)
+                    sibling = node.parent.right  
+                
+                # Sibling is black with two black children so color sibling red and move up  
+                if (sibling.left.color == Color.BLACK and sibling.right.color == Color.BLACK):
                     sibling.color = Color.RED
-                    node = node.parent
+                    node = node.parent  
+                
                 else:
-                    # Sibling right child is black, left is red
+                    
+                    # Sibling is black, right child black, left child red
+                    # Rotate sibling to make outer child red
                     if sibling.right.color == Color.BLACK:
                         sibling.left.color = Color.BLACK
                         sibling.color = Color.RED
-                        self._right_rotate(sibling)
+                        self.right_rotate(sibling)
                         sibling = node.parent.right  
-                    # Sibling right child is red
+
+                    # Sibling is black with red right child
+                    # Rotate and recolor to fix black height property
                     sibling.color = node.parent.color
                     node.parent.color = Color.BLACK
                     sibling.right.color = Color.BLACK
-                    self._left_rotate(node.parent)
+                    self.left_rotate(node.parent)
                     node = self.root 
-            else:
-                # Node is a right child
-                sibling = node.parent.left  # Get the sibling
             
-                # Sibling is red
+            # Right side fixing aka node is right child (opposite of above fixes)
+            else:
+                sibling = node.parent.left
+                
+                # Sibling is red so rotate and recolor so sibling is black
                 if sibling.color == Color.RED:
                     sibling.color = Color.BLACK
                     node.parent.color = Color.RED
-                    self._right_rotate(node.parent)
+                    self.right_rotate(node.parent)
                     sibling = node.parent.left
                 
-                # Sibling is black with two black children
-                if sibling.right.color == Color.BLACK and sibling.left.color == Color.BLACK:
+                # Sibling is black with two black children so color sibling red and move up 
+                if (sibling.right.color == Color.BLACK and 
+                    sibling.left.color == Color.BLACK):
                     sibling.color = Color.RED
                     node = node.parent
+                
                 else:
-                    # Sibling left child is black, right is red
+                    # Sibling is black with left child black, right child red
+                    # Rotate sibling to make outer child red
                     if sibling.left.color == Color.BLACK:
                         sibling.right.color = Color.BLACK
                         sibling.color = Color.RED
-                        self._left_rotate(sibling)
+                        self.left_rotate(sibling)
                         sibling = node.parent.left
                     
-                    # Sibling left child is red
+                    # Sibling is black with red left child
                     sibling.color = node.parent.color
                     node.parent.color = Color.BLACK
                     sibling.left.color = Color.BLACK
-                    self._right_rotate(node.parent)
+                    self.right_rotate(node.parent)
                     node = self.root
-
+        
+        # Make sure node is black
         node.color = Color.BLACK
-
     
     
     # Fix After Insertion
