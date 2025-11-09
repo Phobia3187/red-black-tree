@@ -1,12 +1,11 @@
 """
 Group Project CS315: Red Black Tree
-Group Members: Kalum Fischer and John Markham
+Group Members: Kalum Fischer && John Markham
 Due Date: 12 November 2025
 Purpose: Satisfy the requirements of the group project for CS315 Data Structures
-Sources of Help:
+Sources of Help: https://www.geeksforgeeks.org/dsa/introduction-to-red-black-tree/
+https://en.wikipedia.org/wiki/Red%E2%80%93black_tree
 """
-
-
 
 from enum import Enum
 
@@ -330,15 +329,15 @@ def main():
     tree = RedBlackTree()
     values = []
     choice = 0
-    
-    print("   RED BLACK Tree Menu   ")
-    print("1. Insert a value")
-    print("2. Display Tree (in order traversal)")
-    print("3. Search for a value")
-    print("4. Delete a value")
-    print("5. Exit the program")
 
     while True:
+        print("---RED-BLACK Tree Menu---")
+        print("1.) Insert")
+        print("2.) Traverse (In-Order)")
+        print("3.) Search")
+        print("4.) Delete")
+        print("5.) Exit")
+        
         try:
             choice = int(input("\nEnter a choice (1-5): "))
         except: 
@@ -353,19 +352,24 @@ def main():
                         break
                     tree.insert(value)
                     print(f"{value} was inserted")
+                    print()
                 except:
                     print("Please enter a valid integer.")
+                    print()
         elif choice == 2:
             print("\nIn order traversal of RB Tree: ")
             tree.in_order_traversal()
+            print()
         elif choice == 3:
             try:
                 value = int(input("\nType a value to search for: "))
                 result = tree.search(value)
                 if result:
                     print(f"{value} has been found. Color: {result.color}")
+                    print()
                 else:
                     print(f"{value} was not found in tree")
+                    print()
             except:
                 print("Please enter a valid integer.")
         elif choice == 4:
@@ -375,8 +379,10 @@ def main():
                 if result:
                     tree.delete(value)
                     print(f"{value} has been deleted")
+                    print()
                 else:
                     print(f"{value} was not found in tree")
+                    print()
             except:
                 print("Please enter a valid integer.")
         elif choice == 5:
@@ -384,6 +390,7 @@ def main():
             break
         else:
             print("Please enter a number between 1 and 5.")
+            print()
 
 if __name__ == "__main__":
     main()
