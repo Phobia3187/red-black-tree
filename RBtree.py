@@ -5,6 +5,10 @@ Due Date: 12 November 2025
 Purpose: Satisfy the requirements of the group project for CS315 Data Structures
 Sources of Help: https://www.geeksforgeeks.org/dsa/introduction-to-red-black-tree/
 https://en.wikipedia.org/wiki/Red%E2%80%93black_tree
+
+Cormen, T. H., Leiserson, C. E., Rivest, R. L., & Stein, C. (2009). Red-black trees. In Introduction to algorithms (3rd ed., pp. 308-338). MIT Press.
+Used for pseudocode hints especially in the delete method and overall RedBlack Tree knowledge. 
+
 """
 
 from enum import Enum
@@ -188,6 +192,7 @@ class RedBlackTree:
 
     # Replace subtree helper for delete
     def replaceSubtree(self, old_node,  replacement_node):
+        # Old node is the root so new node becomes new root
         if old_node.parent is None:
             self.root = replacement_node
         elif old_node == old_node.parent.left:
