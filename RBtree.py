@@ -222,7 +222,7 @@ class RedBlackTree:
                 if sibling.color == Color.RED:
                     sibling.color = Color.BLACK
                     node.parent.color = Color.RED
-                    self.left_rotate(node.parent)
+                    self._left_rotate(node.parent)
                     sibling = node.parent.right  
                 
                 # Sibling is black with two black children so color sibling red and move up  
@@ -237,7 +237,7 @@ class RedBlackTree:
                     if sibling.right.color == Color.BLACK:
                         sibling.left.color = Color.BLACK
                         sibling.color = Color.RED
-                        self.right_rotate(sibling)
+                        self._right_rotate(sibling)
                         sibling = node.parent.right  
 
                     # Sibling is black with red right child
@@ -245,7 +245,7 @@ class RedBlackTree:
                     sibling.color = node.parent.color
                     node.parent.color = Color.BLACK
                     sibling.right.color = Color.BLACK
-                    self.left_rotate(node.parent)
+                    self._left_rotate(node.parent)
                     node = self.root 
             
             # Right side fixing aka node is right child (opposite of above fixes)
@@ -256,7 +256,7 @@ class RedBlackTree:
                 if sibling.color == Color.RED:
                     sibling.color = Color.BLACK
                     node.parent.color = Color.RED
-                    self.right_rotate(node.parent)
+                    self._right_rotate(node.parent)
                     sibling = node.parent.left
                 
                 # Sibling is black with two black children so color sibling red and move up 
@@ -271,14 +271,14 @@ class RedBlackTree:
                     if sibling.left.color == Color.BLACK:
                         sibling.right.color = Color.BLACK
                         sibling.color = Color.RED
-                        self.left_rotate(sibling)
+                        self._left_rotate(sibling)
                         sibling = node.parent.left
                     
                     # Sibling is black with red left child
                     sibling.color = node.parent.color
                     node.parent.color = Color.BLACK
                     sibling.left.color = Color.BLACK
-                    self.right_rotate(node.parent)
+                    self._right_rotate(node.parent)
                     node = self.root
         
         # Make sure node is black
