@@ -173,7 +173,8 @@ class RedBlackTree:
             
             # If smallest node is direct right child of node_to_delete
             if node_removed.parent == node_to_delete:
-                replacement_node.parent = node_removed
+                if replacement_node != self.EMPTY:
+                    replacement_node.parent = node_removed
             # Smallest node is not direct child, but is grandchild or further
             else:
                 self.replace_subtree(node_removed, node_removed.right)
