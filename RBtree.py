@@ -292,7 +292,7 @@ class RedBlackTree:
             if node.parent == node.parent.parent.left:
                 uncle = node.parent.parent.right
 
-                # Code is red - recolor required
+                # Node is red - recolor required
                 if uncle.color == Color.RED:
                     node.parent.color = Color.BLACK
                     uncle.color = Color.BLACK
