@@ -7,7 +7,7 @@ Sources of Help: https://www.geeksforgeeks.org/dsa/introduction-to-red-black-tre
 https://en.wikipedia.org/wiki/Red%E2%80%93black_tree
 
 Cormen, T. H., Leiserson, C. E., Rivest, R. L., & Stein, C. (2009). Red-black trees. In Introduction to algorithms (3rd ed., pp. 308-338). MIT Press.
-Used for pseudocode hints especially in the delete method and overall RedBlack Tree knowledge. 
+Used for pseudocode hints especially in the delete method to include edge cases for fix delete and overall RedBlack Tree knowledge. 
 
 """
 
@@ -74,7 +74,7 @@ class RedBlackTree:
         if node != self.EMPTY:
             self.in_order_traversal(node.left)
             print(node.value)
-            print(node.color)
+            print(node.color.name)
             self.in_order_traversal(node.right)
 
     # Rotate left
@@ -158,11 +158,11 @@ class RedBlackTree:
         # Node has no left child so replace right child
         if node_to_delete.left == self.EMPTY:
             replacement_node = node_to_delete.right
-            self.replaceSubtree(node_to_delete, node_to_delete.right)
+            self.replace_subtree(node_to_delete, node_to_delete.right)
         # Node has no right child so replace with its left child
         elif node_to_delete.right == self.EMPTY:
             replacement_node = node_to_delete.left
-            self.replaceSubtree(node_to_delete, node_to_delete.left)
+            self.replace_subtree(node_to_delete, node_to_delete.left)
         
         # Node has two children
         else:
@@ -176,12 +176,12 @@ class RedBlackTree:
                 replacement_node.parent = node_removed
             # Smallest node is not direct child, but is grandchild or further
             else:
-                self.replaceSubtree(node_removed, node_removed.right)
+                self.replace_subtree(node_removed, node_removed.right)
                 node_removed.right = node_to_delete.right
                 node_removed.right.parent = node_removed
 
             # Replace deleted node with it successor
-            self.replaceSubtree(node_to_delete, node_removed)
+            self.replace_subtree(node_to_delete, node_removed)
             node_removed.left = node_to_delete.left
             node_removed.left.parent = node_removed
             node_removed.color = node_to_delete.color
@@ -191,7 +191,7 @@ class RedBlackTree:
             self.fix_delete(replacement_node)
 
     # Replace subtree helper for delete
-    def replaceSubtree(self, old_node,  replacement_node):
+    def replace_subtree(self, old_node,  replacement_node):
         # Old node is the root so new node becomes new root
         if old_node.parent is None:
             self.root = replacement_node
@@ -370,7 +370,7 @@ def main():
                 value = int(input("\nType a value to search for: "))
                 result = tree.search(value)
                 if result:
-                    print(f"{value} has been found. Color: {result.color}")
+                    print(f"{value} has been found. Color: {result.color.name}")
                     print()
                 else:
                     print(f"{value} was not found in tree")
