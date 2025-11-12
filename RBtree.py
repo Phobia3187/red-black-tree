@@ -126,8 +126,7 @@ class RedBlackTree:
         # The old parent becomes the right child of the new parent.
         new_parent.right = node
         node.parent = new_parent
-        # I would never copy and paste this from the other rotate function. :) - True
-
+    
     # Search Tree
     def search(self, value):
         current = self.root
